@@ -8,13 +8,13 @@ import jwt_decode from "jwt-decode";
 export const login = createAsyncThunk(
     'auth/login',
     async(id, {fulfillWithValue, rejectWithValue}) => {
-        console.log(id, "mobile id in slice")
+        
         try{
             const response = await axios.post(
-                "https://staging-sso.agrotrust.io/sso/api/user/byPassLogin", id
+                "https://staging-sso.agrotrust.io/sso/api/user/byPassLogin", `+91${id}`
             )
             console.log(response)
-            if(response.data) {
+            if(response.status === 200) {
                 const user = jwt_decode(response.data.token)
                 localStorage.setItem('user', JSON.stringify(user))
                 return fulfillWithValue(user)  

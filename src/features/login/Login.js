@@ -1,5 +1,5 @@
 import { unwrapResult } from '@reduxjs/toolkit'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 // import PhoneInput from 'react-phone-number-input/input'
 // import 'react-phone-number-input/style.css'
 import { useDispatch } from 'react-redux'
@@ -9,15 +9,22 @@ import { login } from './authSlice'
 export const Login = () => {
     const [id, setMobileId] = useState("")
     const [status, setStatus] = useState("idle")
+    const [errorMsg, setErrorMsg] = useState("")
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
 
+    useEffect(() => {
+        const user = localStorage.getItem('user')
+        if(user){
+            navigate('/posts')
+        }
+    })
+
 
 
     const onChangeHandler = (e) => {
-        let mobileId = "+91" + e.target.value
-        setMobileId(mobileId)
+        setMobileId(e.target.value)
     }
 
     const loginHandler = async(e) => {
@@ -28,9 +35,10 @@ export const Login = () => {
             console.log(result, "result")
             unwrapResult(result)
             setStatus("success")
-            navigate('/posts')
+            
         }catch(error){
             setStatus("idle")
+            setErrorMsg("Something went wrong, Please check the credentials")
             console.log("something is wrong", error)
         }
 
@@ -47,7 +55,7 @@ export const Login = () => {
                     style={{padding:"1rem", margin:"0.5rem", width:"15rem"}}
                     placeholder='Mobile Number'
                     value={id}
-                    type="text"
+                    type="teL"
                     onChange={onChangeHandler}
                     />
                 </div>
@@ -60,6 +68,10 @@ export const Login = () => {
                     </button>
                 </div>
             </form>
+
+            <div>
+                <small style={{color:"red", textAlign:"center"}}>{errorMsg}</small>
+            </div>
             </div>
 
         </>
