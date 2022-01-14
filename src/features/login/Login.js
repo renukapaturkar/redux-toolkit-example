@@ -55,7 +55,7 @@ export const Login = () => {
                     style={{padding:"1rem", margin:"0.5rem", width:"15rem"}}
                     placeholder='Mobile Number'
                     value={id}
-                    type="teL"
+                    type="tel"
                     onChange={onChangeHandler}
                     />
                 </div>
